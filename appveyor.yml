@@ -9,7 +9,7 @@
 #---------------------------------#
 
 # version format
-version: 1.0.{build}
+version: 0.0.{build}
 
 # you can use {branch} name in version format too
 # version: 1.0.{build}-{branch}
@@ -105,7 +105,7 @@ platform: Any CPU
 #  - Any CPU
 
 # build Configuration, i.e. Debug, Release, etc.
-configuration: Release
+configuration: Debug
 
 #scripts to run before build
 before_build:
@@ -115,7 +115,6 @@ before_package:
 
 # scripts to run after build
 after_build:
-  - cmd: dir
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
