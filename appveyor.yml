@@ -267,7 +267,7 @@ deploy:
 
     # Deploy to GitHub Releases
   - provider: GitHub
-    artifact: find_area           # upload all NuGet packages to release assets
+    artifact: dist           # upload all NuGet packages to release assets
     draft: false
     prerelease: false
     on:
