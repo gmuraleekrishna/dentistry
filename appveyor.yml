@@ -148,10 +148,7 @@ matrix:
 install:
   # by default, all script lines are interpreted as batch
   - cmd: python -m pip install --upgrade pip
-  - cmd: pip install numpy
-  - cmd: pip install matplotlib
-  - cmd: pip install opencv-python
-  - cmd: pip install pyinstaller 
+  - cmd: pip install -r requirements.txt
   # to run script as a PowerShell command prepend it with ps:
   # - ps: Write-Host 'This is PowerShell'
   # batch commands start from cmd:
@@ -231,7 +228,7 @@ build_script:
 artifacts:
 
   # pushing a single file
-  - path: find_area
+  - path: dist
 
   # pushing a single file with environment variable in path and "Deployment name" specified
   #- path: MyProject\bin\$(configuration)
