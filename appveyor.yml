@@ -142,7 +142,7 @@ artifacts:
 deploy:
   # Deploy to GitHub Releases
   - provider: GitHub
-    artifact: dist           
+    artifact: dist.zip         
     auth_token:
       secure: +ivJcDbcEx7+jb4o4lZo6AEZgVNHfVgYmk/3bRwRs6j8B2qeNfmac7GcPmRdg0md
     on:
