@@ -1,13 +1,5 @@
-'''Draw polygon regions of interest (ROIs) in matplotlib images,
-similar to Matlab's roipoly function.
-
-See the file example.py for an application. 
-
-Created by Joerg Doepfert 2014 based on code posted by Daniel
-Kornhauser.
-
-'''
-
+import matplotlib
+matplotlib.use('TkAgg')
 
 import numpy as np
 import sys
@@ -16,13 +8,7 @@ import matplotlib.path as mplPath
 
 class roipoly:
 
-    def __init__(self, fig=[], ax=[], roicolor='b'):
-        if fig == []:
-            fig = plt.gcf()
-
-        if ax == []:
-            ax = plt.gca()
-
+    def __init__(self, canvas, roicolor='b'):
         self.previous_point = []
         self.allxpoints = []
         self.allypoints = []
@@ -30,21 +16,14 @@ class roipoly:
         self.end_point = []
         self.line = None
         self.roicolor = roicolor
-        self.fig = fig
-        self.ax = ax
-        #self.fig.canvas.draw()
+        self.canvas = canvas
 
-        self.__ID1 = self.fig.canvas.mpl_connect(
-            'motion_notify_event', self.__motion_notify_callback)
-        self.__ID2 = self.fig.canvas.mpl_connect(
+        self.__ID1 = self.canvas.mpl_connect(
+            'resize', self.__motion_notify_callback)
+        self.__ID2 = self.canvas.mpl_connect(
             'button_press_event', self.__button_press_callback)
 
-        if sys.flags.interactive:
-            plt.show(block=False)
-        else:
-            plt.show()
-
-    def getMask(self, currentImage):
+    def get_mask(self, currentImage):
         ny, nx = np.shape(currentImage)
         poly_verts = [(self.allxpoints[0], self.allypoints[0])]
         for i in range(len(self.allxpoints)-1, -1, -1):
@@ -60,7 +39,7 @@ class roipoly:
         grid = ROIpath.contains_points(points).reshape((ny,nx))
         return grid
       
-    def displayROI(self,**linekwargs):
+    def display_roi(self,**linekwargs):
         l = plt.Line2D(self.allxpoints +
                      [self.allxpoints[0]],
                      self.allypoints +
@@ -70,26 +49,20 @@ class roipoly:
         ax.add_line(l)
         plt.draw()
 
-    def displayMean(self,currentImage, **textkwargs):
-        mask = self.getMask(currentImage)
-        meanval = np.mean(np.extract(mask, currentImage))
-        stdval = np.std(np.extract(mask, currentImage))
-        string = "%.3f +- %.3f" % (meanval, stdval)
-        plt.text(self.allxpoints[0], self.allypoints[0],
-                 string, color=self.roicolor,
-                 bbox=dict(facecolor='w', alpha=0.6), **textkwargs)
-
     def __motion_notify_callback(self, event):
+        print("hello")
+
         if event.inaxes:
             ax = event.inaxes
             x, y = event.xdata, event.ydata
             if (event.button == None or event.button == 1) and self.line != None: # Move line around
                 self.line.set_data([self.previous_point[0], x],
                                    [self.previous_point[1], y])
-                self.fig.canvas.draw()
+                self.canvas.draw()
 
 
     def __button_press_callback(self, event):
+        print("hello")
         if event.inaxes:
             x, y = event.xdata, event.ydata
             ax = event.inaxes
@@ -105,7 +78,7 @@ class roipoly:
                     self.allypoints=[y]
                                                 
                     ax.add_line(self.line)
-                    self.fig.canvas.draw()
+                    self.canvas.draw()
                     # add a segment
                 else: # if there is a line, create a segment
                     self.line = plt.Line2D([self.previous_point[0], x],
@@ -116,24 +89,17 @@ class roipoly:
                     self.allypoints.append(y)
                                                                                 
                     event.inaxes.add_line(self.line)
-                    self.fig.canvas.draw()
+                    self.canvas.draw()
             elif ((event.button == 1 and event.dblclick==True) or
                   (event.button == 3 and event.dblclick==False)) and self.line != None: # close the loop and disconnect
-                self.fig.canvas.mpl_disconnect(self.__ID1) #joerg
-                self.fig.canvas.mpl_disconnect(self.__ID2) #joerg
+                self.canvas.mpl_disconnect(self.__ID1) #joerg
+                self.canvas.mpl_disconnect(self.__ID2) #joerg
                         
                 self.line.set_data([self.previous_point[0],
                                     self.start_point[0]],
                                    [self.previous_point[1],
                                     self.start_point[1]])
                 ax.add_line(self.line)
-                self.fig.canvas.draw()
+                self.canvas.draw()
                 self.line = None
-                        
-                if sys.flags.interactive:
-                    pass
-                else:
-                    #figure has to be closed so that code can continue
-                    plt.close(self.fig) 
-
 
