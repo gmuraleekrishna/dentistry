@@ -7,39 +7,28 @@ import matplotlib.path as mplPath
 
 class multilines:
 
-    def __init__(self, fig=[], ax=[], roicolor='b', max_lines=2):
-        fig = fig or plt.gcf()
-        ax = ax or plt.gca()
-
+    def __init__(self, canvas, roicolor='b', max_lines=2):
         self.previous_point = []
         self.start_point = []
         self.line = None
         self.roicolor = roicolor
-        self.fig = fig
-        self.ax = ax
+        self.canvas = canvas
         self.lines = []
         self.max_lines = max_lines
         self.no_of_lines = 0
 
-        self.__ID1 = self.fig.canvas.mpl_connect(
+        self.__ID1 = self.canvas.mpl_connect(
             'motion_notify_event', self.__motion_notify_callback
             )
-        self.__ID2 = self.fig.canvas.mpl_connect(
+        self.__ID2 = self.canvas.mpl_connect(
             'button_press_event', self.__button_press_callback
             )
-        self.__ID3 = self.fig.canvas.mpl_connect(
+        self.__ID3 = self.canvas.mpl_connect(
             'key_press_event', self.__button_press_callback
             )
 
-        if sys.flags.interactive:
-            plt.show(block=False)
-        else:
-            plt.show()
     def get_lines(self):
         return self.lines
-
-    # def get_lines_cartisian(self)
-    #     return self 
 
     def __motion_notify_callback(self, event):
         if event.inaxes:
@@ -48,7 +37,7 @@ class multilines:
             if (event.button == None or event.button == 1) and self.line != None: # Move line around
                 self.line.set_data([self.previous_point[0], x],
                                    [self.previous_point[1], y])
-                self.fig.canvas.draw()
+                self.canvas.draw()
 
     def __button_press_callback(self, event):
         if event.inaxes:
@@ -76,15 +65,14 @@ class multilines:
                         if self.no_of_lines >= self.max_lines:
                             self.__close()
                             return
-                    self.fig.canvas.draw()
+                    self.canvas.draw()
 
             elif event.name == 'key_press_event':
                 self.__close()
                 return
     
     def __close(self):
-        self.fig.canvas.mpl_disconnect(self.__ID1)
-        self.fig.canvas.mpl_disconnect(self.__ID2)
-        self.fig.canvas.mpl_disconnect(self.__ID3)
-        plt.close(self.fig)
+        self.canvas.mpl_disconnect(self.__ID1)
+        self.canvas.mpl_disconnect(self.__ID2)
+        self.canvas.mpl_disconnect(self.__ID3)
         return
