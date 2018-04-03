@@ -22,7 +22,7 @@ class GetAnglePage(tk.Frame):
 
         f = Figure(figsize=(5,5), dpi=100)
 
-        self.image = cv2.imread("tooth_top.png")
+        self.image = cv2.imread("tooth_side.png")
         a = f.add_subplot(111)
         canvas = FigureCanvasTkAgg(f, self)
         canvas.show()
