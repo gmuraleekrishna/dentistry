@@ -101,7 +101,6 @@ class roipoly:
                             self.start_point[1]])
         self.ax.add_line(self.line)
         self.canvas.draw()
-        self.line = None
 
 
 

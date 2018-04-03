@@ -17,14 +17,9 @@ class GetAreaPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Graph Page!", font=LARGE_FONT)
+        label = tk.Label(self, text="Calculate Area", font=LARGE_FONT)
         
         label.pack(pady=10,padx=10)
-
-        # button1 = ttk.Button(self, text="Done", command=lambda: controller.show_frame(StartPage))
-        # button1.pack()
-
-        
 
         f = Figure(figsize=(5,5), dpi=100)
 
@@ -32,6 +27,8 @@ class GetAreaPage(tk.Frame):
         a = f.add_subplot(111)
         canvas = FigureCanvasTkAgg(f, self)
         canvas.show()
+        a.axis('off')
+
         a.imshow(self.image)
         self.marked_image = roipoly(canvas=canvas, roicolor='r', callback=self.__done_callback)
         canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
@@ -46,4 +43,6 @@ class GetAreaPage(tk.Frame):
         roi_pixels = np.array(roi_pixels, dtype=np.uint8)
         m = cv2.moments(roi_pixels)
 
-        print(m['m00'])
+        area_label = tk.Label(self, text=m['m00'], font=LARGE_FONT)
+        
+        area_label.pack(pady=10,padx=10)

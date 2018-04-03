@@ -53,13 +53,13 @@ class StartPage(tk.Frame):
                             command=lambda: controller.show_frame(PageOne))
         button.pack()
 
-        button2 = ttk.Button(self, text="Visit Page 2",
-                            command=lambda: controller.show_frame(PageTwo))
-        button2.pack()
+        angle_page_btn = ttk.Button(self, text="Calc Angle",
+                            command=lambda: controller.show_frame(GetAnglePage))
+        angle_page_btn.pack()
 
-        button3 = ttk.Button(self, text="Graph Page",
+        area_page_btn = ttk.Button(self, text="Calc Area",
                             command=lambda: controller.show_frame(GetAreaPage))
-        button3.pack()
+        area_page_btn.pack()
 
 
 class PageOne(tk.Frame):
@@ -95,8 +95,6 @@ class PageTwo(tk.Frame):
 
     
         
-
-
 if __name__ == "__main__":
     app = Dentistry()
     # app.protocol("WM_DELETE_WINDOW", kill_pgm)

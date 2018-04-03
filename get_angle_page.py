@@ -1,5 +1,4 @@
 
-from roipoly import roipoly
 from multilines import multilines
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -20,15 +19,17 @@ class GetAnglePage(tk.Frame):
         label.pack(pady=10,padx=10)
 
         f = Figure(figsize=(5,5), dpi=100)
-        
+
+        self.image = cv2.imread("tooth_top.png")
+        a = f.add_subplot(111)
         canvas = FigureCanvasTkAgg(f, self)
-        self.get_angle(canvas=canvas)        
         canvas.show()
+        a.imshow(self.image)
+        self.marked_image = multilines(canvas=canvas, roicolor='r', callback=self.__done_callback)
         canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
 
-        # toolbar = NavigationToolbar2TkAgg(canvas, self)
-        # toolbar.update()
-        # canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        done_button = ttk.Button(self, text="Done", command=self.__done_callback)
+        done_button.pack()
 
     
     def get_angle(self, canvas):
@@ -40,3 +41,11 @@ class GetAnglePage(tk.Frame):
             y = np.absolute(line[3] - line[1])
             x = np.absolute(line[2] - line[0])
             angle.append(np.rad2deg(np.arctan2(y, x)))
+
+    def __done_callback(self):
+        self.marked_image.finish_drawing()
+        roi_pixels = self.marked_image.get_mask(self.image[:,:,0])
+        roi_pixels = np.array(roi_pixels, dtype=np.uint8)
+        m = cv2.moments(roi_pixels)
+
+        print(m['m00'])
