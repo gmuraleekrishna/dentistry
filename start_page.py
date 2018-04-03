@@ -9,14 +9,23 @@ LARGE_FONT= ("Verdana", 12)
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.parent = parent
+        tk.Frame.__init__(self,parent)
         label = tk.Label(self, text="Start Page", font=LARGE_FONT)
         label.pack(pady=10,padx=10)
 
-        button = ttk.Button(self, text="Get Angle",
-                            command=lambda: controller.show_frame(GetAnglePage))
-        button.pack()
+        ttk.Button(self, text="Calc Angle", command=self.__show_angle_page).pack()
 
-        # button2 = ttk.Button(self, text="Get Area",
-        #                     command=lambda: controller.show_frame(GetAreaPage))
-        # button2.pack()
+        ttk.Button(self, text="Calc Area", command=self.__show_area_page).pack()
+
+    def __show_area_page(self):
+        self.grid_forget()
+        frame = GetAreaPage(self.parent, self)
+        frame.grid(row=0,column=0,sticky="nsew")
+        frame.lift()
+    
+    def __show_angle_page(self):
+        frame = GetAnglePage(self.parent, self)
+        frame.grid(row=0,column=0,sticky="nsew")
+        frame.lift()

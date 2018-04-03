@@ -16,12 +16,14 @@ class GetAreaPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Calculate Area", font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-        self.select_file_btn = tk.Button(self, text="Select file", command=self.get_file).pack()
+        self.select_file_btn = tk.Button(self, text="Select file", command=self.get_file)
+        self.select_file_btn.pack()
         self.pack()
 
     def get_file(self):
         area_image_file_path = filedialog.askopenfilename(title = "Select tooth image file", filetypes = (("jpeg files","*.jpg"),("png files","*.png"), ("all files","*.*")))
         if(area_image_file_path):
+            self.select_file_btn.destroy()
             f = Figure(figsize=(5,5), dpi=100)
             a = f.add_subplot(111)
             a.axis('off')

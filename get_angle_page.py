@@ -16,12 +16,18 @@ class GetAnglePage(tk.Frame):
         tk.Frame.__init__(self, parent)
         label = tk.Label(self, text="Calculate Angle", font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-        self.select_file_btn = tk.Button(self, text="Select file", command=self.get_file).pack()
+        self.select_file_btn = tk.Button(self, text="Select file", command=self.get_file)
+        self.select_file_btn.pack()
+
+        self.back_btn = tk.Button(self, text="Cancel", command=self.back)
+        self.back_btn.pack()
+
         self.pack()
 
     def get_file(self):
         angle_image_file_path = filedialog.askopenfilename(title = "Select tooth image file", filetypes = (("jpeg files","*.jpg"),("png files","*.png"), ("all files","*.*")))
         if(angle_image_file_path):
+            self.select_file_btn.destroy()
             f = Figure(figsize=(5,5), dpi=100)
             a = f.add_subplot(111)
             a.axis('off')
@@ -41,3 +47,5 @@ class GetAnglePage(tk.Frame):
             angle.append(np.rad2deg(np.arctan2(y, x)))
         tk.Label(self, text=angle[0], font=LARGE_FONT).pack(pady=10,padx=10).pack()
         tk.Label(self, text=angle[1], font=LARGE_FONT).pack(pady=10,padx=10).pack()
+    def back(self):
+        self.destroy()
