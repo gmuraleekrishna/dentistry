@@ -18,10 +18,8 @@ class GetAnglePage(tk.Frame):
         label.pack(pady=10,padx=10)
         self.select_file_btn = tk.Button(self, text="Select file", command=self.get_file)
         self.select_file_btn.pack()
-
         self.back_btn = tk.Button(self, text="Cancel", command=self.back)
         self.back_btn.pack()
-
         self.pack()
 
     def get_file(self):

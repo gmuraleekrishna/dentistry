@@ -18,6 +18,8 @@ class GetAreaPage(tk.Frame):
         label.pack(pady=10,padx=10)
         self.select_file_btn = tk.Button(self, text="Select file", command=self.get_file)
         self.select_file_btn.pack()
+        self.back_btn = tk.Button(self, text="Cancel", command=self.back)
+        self.back_btn.pack()
         self.pack()
 
     def get_file(self):
@@ -42,3 +44,5 @@ class GetAreaPage(tk.Frame):
         m = cv2.moments(roi_pixels)
         area_label = tk.Label(self, text=m['m00'], font=LARGE_FONT)
         area_label.pack(pady=10,padx=10)
+    def back(self):
+        self.destroy()

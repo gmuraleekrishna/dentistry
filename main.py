@@ -15,7 +15,7 @@ class Dentistry(tk.Frame):
 
     def __init__(self, parent=None):
         
-        super().__init__(parent)
+        tk.Frame.__init__(self, parent)
         self.pack()
         
         self.container = tk.Frame(self, width=200, height=200)
