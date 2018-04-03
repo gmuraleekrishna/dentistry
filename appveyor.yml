@@ -118,7 +118,7 @@ after_build:
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - pyinstaller -F --windowed -i icon.ico main.py
+  - pyinstaller -F --windowed -i icon.ico --name=Dentistry main.py
 # to disable automatic builds
 #build: off
 
