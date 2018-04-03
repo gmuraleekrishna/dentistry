@@ -26,7 +26,7 @@ class Dentistry(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, PageOne, PageTwo, GetAreaPage):
+        for F in (StartPage, PageOne, GetAnglePage, GetAreaPage):
 
             frame = F(container, self)
 
@@ -74,29 +74,10 @@ class PageOne(tk.Frame):
         button1.pack()
 
         button2 = ttk.Button(self, text="Page Two",
-                            command=lambda: controller.show_frame(PageTwo))
+                            command=lambda: controller.show_frame(GetAnglePage))
         button2.pack()
-
-
-class PageTwo(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Page Two!!!", font=LARGE_FONT)
-        label.pack(pady=10,padx=10)
-
-        button1 = ttk.Button(self, text="Back to Home",
-                            command=lambda: controller.show_frame(StartPage))
-        button1.pack()
-
-        button2 = ttk.Button(self, text="Page One",
-                            command=lambda: controller.show_frame(PageOne))
-        button2.pack()
-
     
         
 if __name__ == "__main__":
     app = Dentistry()
-    # app.protocol("WM_DELETE_WINDOW", kill_pgm)
-    # app.bind('<Escape>', kill_pgm)
     app.mainloop()

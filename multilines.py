@@ -6,7 +6,7 @@ import matplotlib.path as mplPath
 
 class multilines:
 
-    def __init__(self, canvas, roicolor='b', max_lines=2):
+    def __init__(self, canvas, callback, roicolor='b', max_lines=2):
         self.previous_point = []
         self.start_point = []
         self.line = None
@@ -15,6 +15,7 @@ class multilines:
         self.lines = []
         self.max_lines = max_lines
         self.no_of_lines = 0
+        self.callback = callback
 
         self.__ID1 = self.canvas.mpl_connect(
             'motion_notify_event', self.__motion_notify_callback
@@ -51,7 +52,6 @@ class multilines:
                         self.start_point = [x,y]
                         self.previous_point =  self.start_point                                                
                         ax.add_line(self.line)
-
                     else:
                         self.line = plt.Line2D([self.previous_point[0], x],
                                             [self.previous_point[1], y],
@@ -74,4 +74,5 @@ class multilines:
         self.canvas.mpl_disconnect(self.__ID1)
         self.canvas.mpl_disconnect(self.__ID2)
         self.canvas.mpl_disconnect(self.__ID3)
+        self.callback()
         return
