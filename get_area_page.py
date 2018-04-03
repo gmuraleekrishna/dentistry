@@ -26,7 +26,7 @@ class GetAreaPage(tk.Frame):
         self.image = cv2.imread("tooth_top.png")
         a = f.add_subplot(111)
         canvas = FigureCanvasTkAgg(f, self)
-        canvas.show()
+        canvas.draw()
         a.axis('off')
 
         a.imshow(self.image)

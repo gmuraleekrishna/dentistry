@@ -25,7 +25,7 @@ class GetAnglePage(tk.Frame):
         self.image = cv2.imread("tooth_side.png")
         a = f.add_subplot(111)
         canvas = FigureCanvasTkAgg(f, self)
-        canvas.show()
+        canvas.draw()
         a.imshow(self.image)
         self.marked_image = multilines(canvas=canvas, roicolor='r', callback=self.__done_callback)
         canvas.get_tk_widget().pack(side=tk.BOTTOM, fill=tk.BOTH, expand=True)
