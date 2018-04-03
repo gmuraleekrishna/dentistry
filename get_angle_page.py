@@ -39,6 +39,5 @@ class GetAnglePage(tk.Frame):
             y = np.absolute(line[3] - line[1])
             x = np.absolute(line[2] - line[0])
             angle.append(np.rad2deg(np.arctan2(y, x)))
-            
-        tk.Label(self, text=angle[0], font=LARGE_FONT).pack(pady=10,padx=10)
-        tk.Label(self, text=angle[1], font=LARGE_FONT).pack(pady=10,padx=10)
+        tk.Label(self, text=angle[0], font=LARGE_FONT).pack(pady=10,padx=10).pack()
+        tk.Label(self, text=angle[1], font=LARGE_FONT).pack(pady=10,padx=10).pack()

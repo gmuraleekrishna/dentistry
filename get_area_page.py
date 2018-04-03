@@ -38,7 +38,5 @@ class GetAreaPage(tk.Frame):
         roi_pixels = self.marked_image.get_mask(self.image[:,:,0])
         roi_pixels = np.array(roi_pixels, dtype=np.uint8)
         m = cv2.moments(roi_pixels)
-
         area_label = tk.Label(self, text=m['m00'], font=LARGE_FONT)
-        
         area_label.pack(pady=10,padx=10)
