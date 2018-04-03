@@ -1,6 +1,3 @@
-import matplotlib
-matplotlib.use('TkAgg')
-
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
@@ -8,7 +5,7 @@ import matplotlib.path as mplPath
 
 class roipoly:
 
-    def __init__(self, canvas, roicolor='b'):
+    def __init__(self, canvas, callback, roicolor='b'):
         self.previous_point = []
         self.allxpoints = []
         self.allypoints = []
@@ -17,9 +14,11 @@ class roipoly:
         self.line = None
         self.roicolor = roicolor
         self.canvas = canvas
+        self.ax = None
+        self.callback = callback
 
         self.__ID1 = self.canvas.mpl_connect(
-            'resize', self.__motion_notify_callback)
+            'motion_notify_event', self.__motion_notify_callback)
         self.__ID2 = self.canvas.mpl_connect(
             'button_press_event', self.__button_press_callback)
 
@@ -45,15 +44,13 @@ class roipoly:
                      self.allypoints +
                      [self.allypoints[0]],
                      color=self.roicolor, **linekwargs)
-        ax = plt.gca()
-        ax.add_line(l)
+        self.ax = plt.gca()
+        self.ax.add_line(l)
         plt.draw()
 
     def __motion_notify_callback(self, event):
-        print("hello")
-
         if event.inaxes:
-            ax = event.inaxes
+            self.ax = event.inaxes
             x, y = event.xdata, event.ydata
             if (event.button == None or event.button == 1) and self.line != None: # Move line around
                 self.line.set_data([self.previous_point[0], x],
@@ -62,7 +59,6 @@ class roipoly:
 
 
     def __button_press_callback(self, event):
-        print("hello")
         if event.inaxes:
             x, y = event.xdata, event.ydata
             ax = event.inaxes
@@ -92,14 +88,20 @@ class roipoly:
                     self.canvas.draw()
             elif ((event.button == 1 and event.dblclick==True) or
                   (event.button == 3 and event.dblclick==False)) and self.line != None: # close the loop and disconnect
-                self.canvas.mpl_disconnect(self.__ID1) #joerg
-                self.canvas.mpl_disconnect(self.__ID2) #joerg
-                        
-                self.line.set_data([self.previous_point[0],
-                                    self.start_point[0]],
-                                   [self.previous_point[1],
-                                    self.start_point[1]])
-                ax.add_line(self.line)
-                self.canvas.draw()
-                self.line = None
+                self.finish_drawing()
+                self.callback()
+        
+    def finish_drawing(self):
+        self.canvas.mpl_disconnect(self.__ID1) #joerg
+        self.canvas.mpl_disconnect(self.__ID2) #joerg
+                
+        self.line.set_data([self.previous_point[0],
+                            self.start_point[0]],
+                            [self.previous_point[1],
+                            self.start_point[1]])
+        self.ax.add_line(self.line)
+        self.canvas.draw()
+        self.line = None
+
+
 
