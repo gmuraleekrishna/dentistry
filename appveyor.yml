@@ -118,7 +118,7 @@ after_build:
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - pyinstaller -F main.py
+  - pyinstaller -F --windowed -i icon.ico main.py
 # to disable automatic builds
 #build: off
 
@@ -140,7 +140,7 @@ artifacts:
 deploy:
   # Deploy to GitHub Releases
   - provider: GitHub
-    artifact: dist.zip         
+    artifact: dist.zip  
     auth_token:
       secure: +ivJcDbcEx7+jb4o4lZo6AEZgVNHfVgYmk/3bRwRs6j8B2qeNfmac7GcPmRdg0md
     on:
