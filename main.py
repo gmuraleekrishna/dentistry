@@ -5,16 +5,18 @@ import tkinter as tk
 from tkinter import ttk
 import cv2
 
+from database import Database
 from start_page import StartPage
 from get_area_page import GetAreaPage
 from get_angle_page import GetAnglePage
+
 
 LARGE_FONT= ("Verdana", 12)
 
 class Dentistry(tk.Frame):
 
     def __init__(self, parent=None):
-        
+        database = Database()
         tk.Frame.__init__(self, parent)
         self.pack()
         
@@ -22,7 +24,7 @@ class Dentistry(tk.Frame):
         self.container.pack_propagate(True)
         self.container.pack(side="top", fill="both", expand = True)
 
-        frame = StartPage(self.container, self)
+        frame = StartPage(parent=self.container, controller=self, database=database)
         frame.grid(row=0, column=0, sticky="nsew")
         frame.tkraise()
         

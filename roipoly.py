@@ -43,10 +43,17 @@ class roipoly:
                      [self.allxpoints[0]],
                      self.allypoints +
                      [self.allypoints[0]],
-                     color=self.roicolor, **linekwargs)
+                      color=self.roicolor, **linekwargs)
         self.ax = plt.gca()
         self.ax.add_line(l)
         plt.draw()
+
+    def get_marked_polygon(self):
+        pts = []
+        for (x, y) in zip(self.allxpoints, self.allypoints):
+            pts.append(np.array([x,y]))
+        pts = np.array([pts], np.int32)
+        return pts.reshape((-1,1,2))
 
     def __motion_notify_callback(self, event):
         if event.inaxes:
