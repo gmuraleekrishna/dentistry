@@ -59,18 +59,15 @@ class multilines:
                         line = (self.previous_point[0], self.previous_point[1], x, y)
                         self.lines.append(line)
                         self.no_of_lines = self.no_of_lines + 1
-                        if self.no_of_lines >= self.max_lines:
-                            self.__close()
-                            return
                     self.canvas.draw()
+            if self.no_of_lines >= self.max_lines:
+                self.__close()
 
             elif event.name == 'key_press_event':
                 self.__close()
-                return
     
     def __close(self):
         self.canvas.mpl_disconnect(self.__ID1)
         self.canvas.mpl_disconnect(self.__ID2)
         self.canvas.mpl_disconnect(self.__ID3)
         self.callback()
-        return

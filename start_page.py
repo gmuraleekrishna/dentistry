@@ -18,9 +18,9 @@ class StartPage(tk.Frame):
         label = tk.Label(self, text="Start Page", font=LARGE_FONT)
         label.pack(pady=10, padx=10)
 
-        ttk.Button(self, text="Calculate Angle", command=self.__show_angle_page).pack(pady = 10)
+        ttk.Button(self, text="Calculate Angle", width=20, command=self.__show_angle_page).pack(pady = 10)
 
-        ttk.Button(self, text="Calculate Area", command=self.__show_area_page).pack(pady = 10)
+        ttk.Button(self, text="Calculate Area", width=20, command=self.__show_area_page).pack(pady = 10)
 
         tk.Button(self, text="Generate PDF Report", width=20, command=self.__show_report_page).pack(pady=10)
 
