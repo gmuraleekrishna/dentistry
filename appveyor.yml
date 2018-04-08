@@ -118,7 +118,7 @@ after_build:
 
 # to run your custom scripts instead of automatic MSBuild
 build_script:
-  - set PYTHONOPTIMIZE=1 && pyinstaller -F -i icon.ico --debug --name=Dentistry main.py
+  - set PYTHONOPTIMIZE=1 && pyinstaller -F -i icon.ico --windowed --name=Dentistry main.py
 # to disable automatic builds
 #build: off
 

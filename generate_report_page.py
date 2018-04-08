@@ -59,9 +59,8 @@ class GenetateReportPage(tk.Frame):
             for angle_image in self.database.get_angle_image_paths():
                 im = Image(angle_image, 2*inch, 2*inch)
                 Story.append(im)
-                
-                angle1 = '<font size=12>Angle1:  %s \xb0</font>' % self.database.angle_values[angle_image][0]
-                angle2 = '<font size=12>Angle2:  %s \xb0</font>' % self.database.angle_values[angle_image][1]
+                angle1 = "<font size=12>Angle1:  %s°</font>" % self.database.angle_values[angle_image][0]
+                angle2 = "<font size=12>Angle2:  %s°</font>" % self.database.angle_values[angle_image][1]
                 
                 Story.append(Paragraph(angle1, styles["Normal"]))
                 Story.append(Spacer(1, 12))
