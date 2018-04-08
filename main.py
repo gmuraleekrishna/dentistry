@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import matplotlib
 matplotlib.use("TkAgg")
 
@@ -24,7 +26,7 @@ class Dentistry(tk.Frame):
         self.container.pack_propagate(True)
         self.container.pack(side="top", fill="both", expand = True)
 
-        frame = StartPage(parent=self.container, controller=self, database=database)
+        frame = StartPage(parent=self.container, database=database)
         frame.grid(row=0, column=0, sticky="nsew")
         frame.tkraise()
         

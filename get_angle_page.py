@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from matplotlib.figure import Figure
 import cv2
 import numpy as np
@@ -6,6 +8,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import math
+import random
 
 from multilines import multilines
 
@@ -13,24 +16,22 @@ LARGE_FONT= ("Verdana", 12)
 
 class GetAnglePage(tk.Frame):
 
-    def __init__(self, parent, controller, database):
+    def __init__(self, parent, database):
         self.parent = parent
         self.database = database
-        tk.Frame.__init__(self, self.parent)
+        tk.Frame.__init__(self, self.parent, width=100, height=100)
         label = tk.Label(self, text="Calculate Angle", font=LARGE_FONT)
-        label.grid(column=6, row=0, columnspan=1, pady=5)
+        label.grid(column=2, row=0, columnspan=1, pady=10)
 
-        self.box = ttk.Combobox(self.parent, state='readonly')
-        self.box.grid(column=0, row=1, columnspan=2, pady=5, padx=5, in_=self.parent)
-        self.box['values'] = ('Preparation', 'After Restoration', 'After 1day', 'After 4weeks')
-        self.box.current(0)
+        self.select_file_btn = tk.Button(self, text="Select tooth image file", width=20, command=self.get_file)
+        self.select_file_btn.grid(column=2,  row=1, columnspan=1, pady=10)
 
-        self.select_file_btn = tk.Button(self, text="Select file", width=10, command=self.get_file)
-        self.select_file_btn.grid(column=6,  row=4, columnspan=1, pady=5)
+        self.back_btn = tk.Button(self, text="Back", width=10, command=self.__back)
+        self.back_btn.grid(column=2,  row=2, columnspan=1, pady=10)
 
-        self.back_btn = tk.Button(self, text="Cancel", width=10, command=self.__back)
-        self.back_btn.grid(column=6,  row=5, columnspan=1, pady=5)
-        self.pack()
+        file_count = len(self.database.get_angle_image_paths())
+        self.file_nos_label = tk.Label(self, text= str(file_count) + " files added", font=LARGE_FONT)
+        self.file_nos_label.grid(column=2, row=5, columnspan=1, pady=5)
 
     def get_file(self):
         angle_image_file_path = filedialog.askopenfilename(title = "Select tooth image file",
@@ -38,10 +39,9 @@ class GetAnglePage(tk.Frame):
         if(angle_image_file_path):
             self.select_file_btn.destroy()
             self.back_btn.destroy()
-            self.type_of_tooth_image_index =  self.box.current()
-            self.box.destroy()
+            self.file_nos_label.destroy()
 
-            f = Figure(figsize=(5,5), dpi=100)
+            f = Figure(figsize=(6,6), dpi=150)
             a = f.add_subplot(111)
             a.axis('off')
             canvas = FigureCanvasTkAgg(f, self)
@@ -52,14 +52,13 @@ class GetAnglePage(tk.Frame):
             self.marked_image = multilines(canvas=canvas, roicolor='r', callback=self.__done_callback)
 
             self.canvas_widget = canvas.get_tk_widget()
-            self.canvas_widget.grid(column=3,  row=3, columnspan=5, sticky='ew')
+            self.canvas_widget.grid(column=0,  row=3, columnspan=5, sticky='ew', pady=1)
 
             self.done_btn = tk.Button(self, text="Done", width=10, command=self.__back)
-            self.done_btn.grid(column=5,  row=7, columnspan=2, pady=5)
+            self.done_btn.grid(column=2,  row=7, columnspan=1, pady=2)
         
     def __done_callback(self):
-        type_of_tooth_image = self.index_to_type(self.type_of_tooth_image_index)
-        file_name = 'angle_'  + type_of_tooth_image + '.png'
+        file_name = 'angle_'  + str(random.randint(0, 1000)) + '.png'
         angles = []
         lines = self.marked_image.get_lines()
 
@@ -69,10 +68,12 @@ class GetAnglePage(tk.Frame):
             angles.append(np.rad2deg(np.arctan2(y, x)))
 
             self.image = cv2.line(self.image, (math.floor(line[0]), math.floor(line[1])), (math.floor(line[2]), math.floor(line[3])), color=(255, 0, 0), thickness=2, lineType=8)
-        tk.Label(self, text='Angle 1: ' + str(math.floor(angles[0])), font=LARGE_FONT).grid(column=5, row=5, columnspan=1, pady=5)
-        tk.Label(self, text='Angle 2: ' +  str(math.floor(angles[1])), font=LARGE_FONT).grid(column=5, row=6, columnspan=1, pady=5)
+        angle1 = math.floor(180 - angles[0])
+        angle2 = math.floor(180 - angles[1])
+        tk.Label(self, text='Angle 1: ' +  str(angle1) + '\xb0', font=LARGE_FONT).grid(column=2, row=4, columnspan=1, pady=2)
+        tk.Label(self, text='Angle 2: ' +  str(angle2) + '\xb0', font=LARGE_FONT).grid(column=2, row=5, columnspan=1, pady=2)
+        self.database.add_angles(file_name, values=(angle1, angle2))
         cv2.imwrite(file_name, self.image)
-        self.database.add_angles(type_of_tooth_image, file_name, values=angles)
 
 
     def __back(self):
