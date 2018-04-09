@@ -3,9 +3,7 @@
 import tkinter as tk
 from tkinter import ttk
 
-from get_angle_page import GetAnglePage
-from get_area_page import GetAreaPage
-from generate_report_page import GenetateReportPage
+from get_image_file_page import GetImageFilePage
 
 LARGE_FONT= ("Verdana", 12)
 
@@ -22,23 +20,16 @@ class StartPage(tk.Frame):
 
         ttk.Button(self, text="Calculate Area", width=20, command=self.__show_area_page).pack(pady = 10)
 
-        tk.Button(self, text="Generate PDF Report", width=20, command=self.__show_report_page).pack(pady=10)
-
     def __show_area_page(self):
-        self.lower()
-        frame = GetAreaPage(parent=self.parent, database=self.database)
-        frame.grid(column=0, row=0, sticky='nsew')
-        frame.lift()
-    
+        self.image_type = 'area'
+        self.__show_get_image_page()
+
     def __show_angle_page(self):
+        self.image_type = 'angle'
+        self.__show_get_image_page()
+
+    def __show_get_image_page(self):
         self.lower()
-        frame = GetAnglePage(parent=self.parent, database=self.database)
+        frame = GetImageFilePage(parent=self.parent, database=self.database, image_type=self.image_type)
         frame.grid(column=0, row=0, sticky='nsew')
         frame.lift()
-    
-    def __show_report_page(self):
-        self.lower()
-        frame = GenetateReportPage(parent=self.parent, database=self.database)
-        frame.grid(column=0, row=0, sticky='nsew')
-        frame.lift()
-        
