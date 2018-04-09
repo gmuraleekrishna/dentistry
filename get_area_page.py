@@ -8,9 +8,9 @@ import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import random
+import os
 
 from roipoly import roipoly
-# from get_image_file_page import GetImageFilePage
 
 
 LARGE_FONT= ("Verdana", 12)
@@ -43,7 +43,7 @@ class GetAreaPage(tk.Frame):
         self.done_btn.grid(column=2,  row=7, columnspan=1, pady=2)
             
     def __done_callback(self):
-        file_name = 'area_'  + str(random.randint(0, 1000)) + '.png'
+        file_name =  os.path.join(self.database.data['temp'], 'area_'  + str(random.randint(0, 1000)) + '.png')
         self.marked_image.finish_drawing()
         roi_pixels = self.marked_image.get_mask(self.image[:,:,0])
         roi_pixels = np.array(roi_pixels, dtype=np.uint8)

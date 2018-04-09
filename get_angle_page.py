@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import ttk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import random
+import os
 
 from multilines import multilines
 
@@ -39,7 +40,7 @@ class GetAnglePage(tk.Frame):
         self.done_btn.grid(column=2,  row=7, columnspan=1, pady=2)
         
     def __done_callback(self):
-        file_name = 'angle_'  + str(random.randint(0, 1000)) + '.png'
+        file_name =  os.path.join(self.database.data['temp'], 'angle_'  + str(random.randint(0, 1000)) + '.png')
         angles = []
         lines = self.marked_image.get_lines()
 

@@ -6,9 +6,9 @@ from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.enums import TA_JUSTIFY
 import time
-import io
 import tkinter as tk
 from tkinter import ttk, StringVar
+from tkinter import messagebox
 import math
 
 LARGE_FONT= ("Verdana", 12)
@@ -33,7 +33,7 @@ class GenetateReportPage(tk.Frame):
         self.pack()
 
     def gen_report(self):
-        file_name = self.image_type + "_" + time.strftime('%Y-%m-%d%H%M%S') + ".pdf"
+        file_name = self.image_type + "_report_" + time.strftime('%Y-%m-%d%H%M%S') + ".pdf"
         doc = SimpleDocTemplate(file_name, pagesize=A4,
                         rightMargin=72,leftMargin=72,
                         topMargin=72,bottomMargin=18)
@@ -63,7 +63,7 @@ class GenetateReportPage(tk.Frame):
                 else:
                     state =  'unchanged'
                 percentage = 100.0 * math.fabs(last_area - first_area) / first_area
-                analysis = "The area has %s state by %0.1f %%" % (state, percentage)
+                analysis = "The area has %s by %0.1f %%" % (state, percentage)
                 Story.append(Paragraph("Analysis: " + analysis, styles["Normal"]))
                 Story.append(Spacer(1, 12))
 
@@ -80,15 +80,15 @@ class GenetateReportPage(tk.Frame):
                 Story.append(Spacer(1, 12))
                 Story.append(Paragraph(angle2, styles["Normal"]))
                 Story.append(Spacer(1, 24))
-        
 
         Story.append(Paragraph("Comment: " + self.entry.get(), styles["Normal"]))
         Story.append(Spacer(1, 12))
         
         doc.build(Story)
+        if messagebox.showinfo("Saved", "Report generated:" + file_name):
+            self.__back()
         
-        tk.Label(self, text="Report generated: " + file_name, font=LARGE_FONT).grid(column=2, row=10, pady=10)
-    
+
     def __back(self):
         self.destroy()
 

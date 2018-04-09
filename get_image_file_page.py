@@ -65,6 +65,7 @@ class GetImageFilePage(tk.Frame):
         frame.lift()
     
     def __show_report_page(self):
+        self.destroy()
         frame = GenetateReportPage(parent=self.parent, database=self.database, image_type=self.image_type)
         frame.grid(column=0, row=0, sticky='nsew')
         frame.lift()
