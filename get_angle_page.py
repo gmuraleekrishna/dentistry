@@ -19,8 +19,8 @@ class GetAnglePage(tk.Frame):
         self.database = database
         self.image_path = image_path
         tk.Frame.__init__(self, self.parent, width=100, height=100)
-        label = tk.Label(self, text="Calculate Angle", font=LARGE_FONT)
-        label.grid(column=2, row=0, columnspan=1, pady=10)
+        tk.Label(self, text="Calculate Angle", font=LARGE_FONT).grid(column=2, row=0, columnspan=1, pady=10)
+        tk.Label(self, text="Click on the image to draw").grid(column=2, row=1, columnspan=1, pady=10)
 
         f = Figure(figsize=(6,6), dpi=150)
         a = f.add_subplot(111)

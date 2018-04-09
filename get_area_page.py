@@ -24,6 +24,7 @@ class GetAreaPage(tk.Frame):
         tk.Frame.__init__(self, self.parent, width=100, height=100)
         label = tk.Label(self, text="Calculate Area", font=LARGE_FONT)
         label.grid(column=2, row=0, columnspan=1, pady=10)
+        tk.Label(self, text="Click on the image to draw. Double click to finish drawing").grid(column=2, row=1, columnspan=1, pady=10)
 
         f = Figure(figsize=(6,6), dpi=100)
         a = f.add_subplot(111)
