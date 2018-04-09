@@ -45,9 +45,18 @@ class Dentistry(tk.Frame):
 if __name__ == "__main__":
     app = Dentistry()
     app.master.title("Dentistry")
-    app.master.minsize(300, 300)
     def on_close():
         if messagebox.askokcancel("Quit", "Closing the application will delete all the data. Do you want to quit?"):
             app.master.destroy()
+    def about():
+        messagebox.showinfo("About", "Author: Muraleekrishna Gopinathan [gmuraleekrishna@outlook.com]")
+    menubar = tk.Menu(app.master)
+    menubar.add_command(label="About", command=about)
+    menubar.add_command(label="Quit", command=on_close)
+
+# display the menu
+    app.master.config(menu=menubar)
+    app.master.minsize(300, 300)
+    
     app.master.protocol("WM_DELETE_WINDOW", on_close)
     app.mainloop()
