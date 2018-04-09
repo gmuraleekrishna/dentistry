@@ -23,7 +23,7 @@ class GetAnglePage(tk.Frame):
         tk.Label(self, text="Calculate Angle", font=LARGE_FONT).grid(column=2, row=0, columnspan=1, pady=10)
         tk.Label(self, text="Click on the image to draw").grid(column=2, row=1, columnspan=1, pady=10)
 
-        f = Figure(figsize=(6,6), dpi=150)
+        f = Figure(figsize=(6,6), dpi=100)
         a = f.add_subplot(111)
         a.axis('off')
         canvas = FigureCanvasTkAgg(f, self)

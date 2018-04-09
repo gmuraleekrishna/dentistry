@@ -47,7 +47,7 @@ class GetImageFilePage(tk.Frame):
 
 
     def __show_markup_page(self):
-        self.lower()
+        self.destroy()        
         if(self.image_type == 'angle'):
             self.__show_angle_page()
         else:
@@ -59,7 +59,6 @@ class GetImageFilePage(tk.Frame):
         frame.lift()
     
     def __show_angle_page(self):
-        # self.lower()
         frame = GetAnglePage(parent=self.parent, database=self.database, image_path=self.image_file_path)
         frame.grid(column=0, row=0, sticky='nsew')
         frame.lift()

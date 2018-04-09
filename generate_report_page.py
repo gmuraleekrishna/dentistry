@@ -4,7 +4,7 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Image, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.enums import TA_JUSTIFY
+from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 import time
 import tkinter as tk
 from tkinter import ttk, StringVar
@@ -48,7 +48,7 @@ class GenetateReportPage(tk.Frame):
                 area = self.database.area_values[area_image]
                 im = Image(area_image, 2*inch, 2*inch)
                 Story.append(im)
-                area_text = '<font size=12>Area %s pixels</font>' % area
+                area_text = '<font size=11>Area %s pixels</font>' % area
                 
                 Story.append(Paragraph(area_text, styles["Normal"]))
                 Story.append(Spacer(1, 24))
@@ -85,7 +85,7 @@ class GenetateReportPage(tk.Frame):
         Story.append(Spacer(1, 12))
         
         doc.build(Story)
-        if messagebox.showinfo("Saved", "Report generated:" + file_name):
+        if messagebox.showinfo("Saved", "Report generated: " + file_name):
             self.__back()
         
 
