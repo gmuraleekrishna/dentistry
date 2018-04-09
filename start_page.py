@@ -14,9 +14,9 @@ class StartPage(tk.Frame):
         self.parent = parent
         tk.Frame.__init__(self, parent)
 
-        ttk.Button(self, text="Area", width=20, command=self.__show_area_page).pack(pady = 10)
+        ttk.Button(self, text="Area", width=20, command=self.__show_area_page).grid(pady = 10, column=2, row=2)
         
-        ttk.Button(self, text="Angle", width=20, command=self.__show_angle_page).pack(pady = 10)
+        ttk.Button(self, text="Angle", width=20, command=self.__show_angle_page).grid(pady = 10, column=2, row=4)
 
 
     def __show_area_page(self):
