@@ -51,7 +51,7 @@ class GetAnglePage(tk.Frame):
 
             self.image = cv2.line(self.image, (int(line[0]), int(line[1])), (int(line[2]), int(line[3])), color=(255, 0, 0), thickness=2, lineType=8)
         angle1 = int(180 - angles[0])
-        angle2 = int(angles[1])
+        angle2 = int(180 - angles[1])
         tk.Label(self, text='Angle 1: ' +  str(angle1) + '°', font=LARGE_FONT).grid(column=2, row=4, columnspan=1, pady=2)
         tk.Label(self, text='Angle 2: ' +  str(angle2) + '°', font=LARGE_FONT).grid(column=2, row=5, columnspan=1, pady=2)
         self.database.add_angles(file_name, values=(angle1, angle2))
