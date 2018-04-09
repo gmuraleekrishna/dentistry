@@ -13,12 +13,11 @@ class StartPage(tk.Frame):
         self.database = database
         self.parent = parent
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Start Page", font=LARGE_FONT)
-        label.pack(pady=10, padx=10)
 
-        ttk.Button(self, text="Calculate Angle", width=20, command=self.__show_angle_page).pack(pady = 10)
+        ttk.Button(self, text="Area", width=20, command=self.__show_area_page).pack(pady = 10)
+        
+        ttk.Button(self, text="Angle", width=20, command=self.__show_angle_page).pack(pady = 10)
 
-        ttk.Button(self, text="Calculate Area", width=20, command=self.__show_area_page).pack(pady = 10)
 
     def __show_area_page(self):
         self.image_type = 'area'
