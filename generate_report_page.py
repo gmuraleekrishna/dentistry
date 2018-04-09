@@ -9,6 +9,7 @@ import time
 import io
 import tkinter as tk
 from tkinter import ttk, StringVar
+import math
 
 LARGE_FONT= ("Verdana", 12)
 
@@ -51,6 +52,20 @@ class GenetateReportPage(tk.Frame):
                 
                 Story.append(Paragraph(area_text, styles["Normal"]))
                 Story.append(Spacer(1, 24))
+            areas = list(self.database.area_values.items())
+            if(len(areas) > 1):
+                first_area = areas[0][1]
+                last_area = areas[-1][1]
+                if(first_area > last_area):
+                    state = 'reduced'
+                elif (first_area < last_area):
+                    state = 'increased'
+                else:
+                    state =  'unchanged'
+                percentage = 100.0 * math.fabs(last_area - first_area) / first_area
+                analysis = "The area has %s state by %0.1f %%" % (state, percentage)
+                Story.append(Paragraph("Analysis: " + analysis, styles["Normal"]))
+                Story.append(Spacer(1, 12))
 
         elif(self.image_type == 'angle'):
             for angle_image in self.database.get_angle_image_paths():

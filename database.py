@@ -1,9 +1,11 @@
+from collections import OrderedDict
+
 class Database():
     def __init__(self):
         self.area_image_paths = []
         self.angle_image_paths = []
-        self.angle_values = {}
-        self.area_values = {}
+        self.angle_values = OrderedDict()
+        self.area_values = OrderedDict()
     
     def add_angles(self, file_name, values):
         self.angle_image_paths.append(file_name)
