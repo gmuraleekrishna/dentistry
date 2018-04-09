@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import matplotlib as mlb
 from matplotlib.figure import Figure
 import cv2
 import numpy as np

@@ -7,7 +7,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
 import time
 import tkinter as tk
-from tkinter import ttk, StringVar
+from tkinter import ttk
 from tkinter import messagebox
 import math
 
