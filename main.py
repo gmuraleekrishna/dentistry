@@ -5,6 +5,8 @@ matplotlib.use("TkAgg")
 
 import tkinter as tk
 from tkinter import ttk
+from tkinter import messagebox
+
 import cv2
 
 from database import Database
@@ -35,4 +37,8 @@ if __name__ == "__main__":
     app = Dentistry()
     app.master.title("Dentistry")
     app.master.minsize(300, 300)
+    def on_close():
+        if messagebox.askokcancel("Quit", "Closing the application will delete all the data. Do you want to quit?"):
+            app.master.destroy()
+    app.master.protocol("WM_DELETE_WINDOW", on_close)
     app.mainloop()
