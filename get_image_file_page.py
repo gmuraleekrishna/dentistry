@@ -1,6 +1,8 @@
 from tkinter import filedialog
 import tkinter as tk
 from tkinter import ttk
+import time
+import os
 
 LARGE_FONT= ("Verdana", 12)
 from get_angle_page import GetAnglePage
@@ -15,28 +17,34 @@ class GetImageFilePage(tk.Frame):
         self.image_type = image_type
 
         tk.Frame.__init__(self, self.parent, width=100, height=100)
+        tk.Label(self, text="Calculate " + image_type.capitalize(), font=LARGE_FONT).grid(column=2, row=0, columnspan=1, pady=10)
 
+        tk.Label(self, text="Report folder name", font=LARGE_FONT).grid(column=2, row=2, pady=10)
+        if(self.image_type + '_folder' in self.database.data):
+            ttk.Label(self, text=self.database.data[self.image_type + '_folder']).grid(column=2, row=3, stick='ew')
+        else:
+            self.entry = ttk.Entry(self, width=5)
+            self.entry.grid(column=2, row=3, stick='ew')
 
         if(self.image_type == 'angle'):
             self.file_count = len(self.database.get_angle_image_paths())
         else:
             self.file_count = len(self.database.get_area_image_paths())
-        
+
         if(self.file_count > 0):
             string = 'another'
-            tk.Button(self, text="Generate Report", width=20, command=self.__show_report_page).grid(column=2,  row=2, columnspan=1, pady=10)
         else:
             string = 'an'
+        
+        tk.Button(self, text="Add " + string +  " image", width=20, command=self.__get_file).grid(column=2,  row=4, columnspan=1, pady=10)
 
-        tk.Label(self, text="Calculate " + image_type.capitalize(), font=LARGE_FONT).grid(column=2, row=0, columnspan=1, pady=10)
+        if(self.file_count > 0):
+            tk.Button(self, text="Generate Report", width=20, command=self.__show_report_page).grid(column=2,  row=5, columnspan=1, pady=10)
 
-        tk.Button(self, text="Add " + string +  " image", width=20, command=self.__get_file).grid(column=2,  row=1, columnspan=1, pady=10)
-
-
-        tk.Button(self, text="Back", width=10, command=self.__back).grid(column=2,  row=3, columnspan=1, pady=10)
+        tk.Button(self, text="Back", width=10, command=self.__back).grid(column=2,  row=6, columnspan=1, pady=10)
 
   
-        tk.Label(self, text= str(self.file_count) + " files added", font=LARGE_FONT).grid(column=2, row=5, columnspan=1, pady=5)
+        tk.Label(self, text= str(self.file_count) + " files added", font=LARGE_FONT).grid(column=2, row=7, columnspan=1, pady=5)
     
 
     def __get_file(self):
@@ -45,8 +53,18 @@ class GetImageFilePage(tk.Frame):
         if(self.image_file_path):
             self.__show_markup_page()
 
-
+    def __create_project_folder(self):
+        if(self.image_type + '_folder' not in self.database.data):
+            if(self.entry.get() == ''):
+                root_folder = self.image_type.capitalize()
+            else:
+                root_folder = self.entry.get()
+            report_folder_name =  root_folder.replace(' ','_')
+            os.makedirs(report_folder_name)
+            self.database.add(self.image_type + '_folder', report_folder_name)
+    
     def __show_markup_page(self):
+        self.__create_project_folder()
         self.destroy()        
         if(self.image_type == 'angle'):
             self.__show_angle_page()

@@ -34,7 +34,7 @@ class GenetateReportPage(tk.Frame):
         self.pack()
 
     def gen_report(self):
-        file_path = os.path.join(self.database.data['root'],  self.image_type + "_report_" + time.strftime('%Y-%m-%d%H%M%S') + ".pdf")
+        file_path = os.path.join(self.database.data[self.image_type + '_folder'],  self.image_type + "_report_" + time.strftime('%Y-%m-%d-%H%M%S') + ".pdf")
         doc = SimpleDocTemplate(file_path, pagesize=A4,
                         rightMargin=72,leftMargin=72,
                         topMargin=72,bottomMargin=18)
