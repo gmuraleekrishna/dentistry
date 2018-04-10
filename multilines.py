@@ -38,7 +38,7 @@ class multilines:
     def __button_press_callback(self, event):
         if event.inaxes:
             if event.name == 'button_press_event' and event.button == 1:
-                x, y = event.xdata, event.ydata
+                x, y = int(event.xdata), int(event.ydata)
                 ax = event.inaxes
                 if event.dblclick == False:
                     if self.line == None:

@@ -43,13 +43,23 @@ class GetAnglePage(tk.Frame):
         file_path =  os.path.join(self.database.data['angle_folder'], str(random.randint(0, 1000)) + '.png')
         angles = []
         lines = self.marked_image.get_lines()
-
+        lowest_point = []
         for line in lines:
             y = np.absolute(line[3] - line[1])
             x = np.absolute(line[2] - line[0])
             angles.append(np.rad2deg(np.arctan2(y, x)))
 
-            self.image = cv2.line(self.image, (int(line[0]), int(line[1])), (int(line[2]), int(line[3])), color=(255, 0, 0), thickness=2, lineType=8)
+            self.image = cv2.line(self.image, ( line[0], line[1] ), ( line[2], line[3] ), color=(255, 0, 0), thickness=2, lineType=8)
+            if(line[3] > line[1]):
+                lowest_point.append((line[2] , line[3]))
+            else:
+                lowest_point.append((line[0] , line[1]))
+
+        if(lowest_point[0][1] > lowest_point[1][1]):
+            self.image = cv2.line(self.image, (15, lowest_point[1][1] - 10), (self.image.shape[1] - 15, lowest_point[1][1] - 10), color=(0, 0, 255), thickness=2, lineType=8)
+        else:
+            self.image = cv2.line(self.image, (15, lowest_point[0][1] - 10), (self.image.shape[1] - 15, lowest_point[0][1] - 10), color=(0, 0, 255), thickness=2, lineType=8)
+
         angle1 = int(180 - angles[0])
         angle2 = int(180 - angles[1])
         tk.Label(self, text='Angle 1: ' +  str(angle1) + '°', font=LARGE_FONT).grid(column=2, row=4, columnspan=1, pady=2)
