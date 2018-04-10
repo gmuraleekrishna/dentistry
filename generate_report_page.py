@@ -47,7 +47,7 @@ class GenetateReportPage(tk.Frame):
         if(self.image_type == 'area'):
             for area_image in self.database.get_area_image_paths():
                 area = self.database.area_values[area_image]
-                im = Image(area_image, 2*inch, 2*inch)
+                im = Image(area_image, 3*inch, 3*inch)
                 Story.append(im)
                 area_text = '<font size=11>Area %s pixels</font>' % area
                 
@@ -70,7 +70,7 @@ class GenetateReportPage(tk.Frame):
 
         elif(self.image_type == 'angle'):
             for angle_image in self.database.get_angle_image_paths():
-                im = Image(angle_image, 2*inch, 2*inch)
+                im = Image(angle_image, 3*inch, 3*inch)
                 Story.append(im)
                 angle1 = self.database.angle_values[angle_image][0]
                 angle2 =self.database.angle_values[angle_image][1]
