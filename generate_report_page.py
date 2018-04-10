@@ -10,6 +10,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 import math
+import os
 
 LARGE_FONT= ("Verdana", 12)
 
@@ -33,8 +34,8 @@ class GenetateReportPage(tk.Frame):
         self.pack()
 
     def gen_report(self):
-        file_name = self.image_type + "_report_" + time.strftime('%Y-%m-%d%H%M%S') + ".pdf"
-        doc = SimpleDocTemplate(file_name, pagesize=A4,
+        file_path = os.path.join(self.database.data['root'],  self.image_type + "_report_" + time.strftime('%Y-%m-%d%H%M%S') + ".pdf")
+        doc = SimpleDocTemplate(file_path, pagesize=A4,
                         rightMargin=72,leftMargin=72,
                         topMargin=72,bottomMargin=18)
         Story=[]
@@ -85,7 +86,7 @@ class GenetateReportPage(tk.Frame):
         Story.append(Spacer(1, 12))
         
         doc.build(Story)
-        if messagebox.showinfo("Saved", "Report generated: " + file_name):
+        if messagebox.showinfo("Saved", "Report generated: " + file_path):
             self.__back()
         
 

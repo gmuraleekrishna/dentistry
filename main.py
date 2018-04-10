@@ -6,10 +6,7 @@ matplotlib.use("TkAgg")
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-import time 
-
 import cv2
-import os, errno
 
 from database import Database
 from start_page import StartPage
@@ -25,13 +22,7 @@ class Dentistry(tk.Frame):
         database = Database()
         tk.Frame.__init__(self, parent)
         self.pack()
-        foldername = 'output_' + time.strftime('%Y-%m-%d%H%M%S')
-        try:
-            os.makedirs(foldername)
-            database.add('temp', foldername)
-        except OSError as e:
-            if e.errno != errno.EEXIST:
-                raise
+        
         
         self.container = tk.Frame(self, width=200, height=200)
         self.container.pack_propagate(True)

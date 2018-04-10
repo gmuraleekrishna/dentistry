@@ -18,11 +18,11 @@ class GetImageFilePage(tk.Frame):
 
 
         if(self.image_type == 'angle'):
-            file_count = len(self.database.get_angle_image_paths())
+            self.file_count = len(self.database.get_angle_image_paths())
         else:
-            file_count = len(self.database.get_area_image_paths())
+            self.file_count = len(self.database.get_area_image_paths())
         
-        if(file_count > 0):
+        if(self.file_count > 0):
             string = 'another'
             tk.Button(self, text="Generate Report", width=20, command=self.__show_report_page).grid(column=2,  row=2, columnspan=1, pady=10)
         else:
@@ -36,7 +36,7 @@ class GetImageFilePage(tk.Frame):
         tk.Button(self, text="Back", width=10, command=self.__back).grid(column=2,  row=3, columnspan=1, pady=10)
 
   
-        tk.Label(self, text= str(file_count) + " files added", font=LARGE_FONT).grid(column=2, row=5, columnspan=1, pady=5)
+        tk.Label(self, text= str(self.file_count) + " files added", font=LARGE_FONT).grid(column=2, row=5, columnspan=1, pady=5)
     
 
     def __get_file(self):

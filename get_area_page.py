@@ -42,16 +42,16 @@ class GetAreaPage(tk.Frame):
         self.done_btn.grid(column=2,  row=7, columnspan=1, pady=2)
             
     def __done_callback(self):
-        file_name =  os.path.join(self.database.data['temp'], 'area_'  + str(random.randint(0, 1000)) + '.png')
+        file_path =  os.path.join(self.database.data['area_folder'], str(random.randint(0, 1000)) + '.png')
         self.marked_image.finish_drawing()
         roi_pixels = self.marked_image.get_mask(self.image[:,:,0])
         roi_pixels = np.array(roi_pixels, dtype=np.uint8)
         pts = self.marked_image.get_marked_polygon()
         final = cv2.polylines(self.image, [pts], True, color=(255,0, 0), thickness=2, lineType=8)
-        cv2.imwrite(file_name, final)
+        cv2.imwrite(file_path, final)
         m = cv2.moments(roi_pixels)
 
-        self.database.add_area(file_name, value=m['m00'])
+        self.database.add_area(file_path, value=m['m00'])
         area_label = tk.Label(self, text= 'Area: '+ str(m['m00']) + ' px', font=LARGE_FONT, width=25)
         area_label.grid(column=2, row=4, columnspan=1, pady=5)
     

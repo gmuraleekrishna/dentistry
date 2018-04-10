@@ -40,7 +40,7 @@ class GetAnglePage(tk.Frame):
         self.done_btn.grid(column=2,  row=7, columnspan=1, pady=2)
         
     def __done_callback(self):
-        file_name =  os.path.join(self.database.data['temp'], 'angle_'  + str(random.randint(0, 1000)) + '.png')
+        file_path =  os.path.join(self.database.data['angle_folder'], str(random.randint(0, 1000)) + '.png')
         angles = []
         lines = self.marked_image.get_lines()
 
@@ -54,8 +54,8 @@ class GetAnglePage(tk.Frame):
         angle2 = int(180 - angles[1])
         tk.Label(self, text='Angle 1: ' +  str(angle1) + '°', font=LARGE_FONT).grid(column=2, row=4, columnspan=1, pady=2)
         tk.Label(self, text='Angle 2: ' +  str(angle2) + '°', font=LARGE_FONT).grid(column=2, row=5, columnspan=1, pady=2)
-        self.database.add_angles(file_name, values=(angle1, angle2))
-        cv2.imwrite(file_name, self.image)
+        self.database.add_angles(file_path, values=(angle1, angle2))
+        cv2.imwrite(file_path, self.image)
 
 
     def __back(self):
