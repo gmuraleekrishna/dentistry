@@ -81,6 +81,16 @@ class GenetateReportPage(tk.Frame):
                 Story.append(Spacer(1, 12))
                 Story.append(Paragraph(angle2, styles["Normal"]))
                 Story.append(Spacer(1, 24))
+            angles = list(self.database.angle_values.items())
+            if(len(angles) > 1):
+                first_angles = angles[0][1]
+                last_angles = angles[-1][1]
+                state1, percentage1 = self.get_change(first_angles[0], last_angles[0])
+                state2, percentage2 = self.get_change(first_angles[1], last_angles[1])
+                analysis1 = "Angle1 has %s by %0.1f %%" % (state1, percentage1)
+                analysis2 = "angle2 has %s by %0.1f %%" % (state2, percentage2)
+                Story.append(Paragraph("Analysis: " + analysis1 + ' and ' +  analysis2, styles["Normal"]))
+                Story.append(Spacer(1, 12))
 
         Story.append(Paragraph("Comment: " + self.entry.get(), styles["Normal"]))
         Story.append(Spacer(1, 12))
@@ -89,7 +99,15 @@ class GenetateReportPage(tk.Frame):
         if messagebox.showinfo("Saved", "Report generated: " + file_path):
             self.__back()
         
-
+    def get_change(self, first_angle, last_angle):
+        if(first_angle > last_angle):
+            state = 'reduced'
+        elif (first_angle < last_angle):
+            state = 'increased'
+        else:
+            state =  'unchanged'
+        percentage = 100.0 * math.fabs(first_angle - last_angle) / first_angle
+        return state, percentage
     def __back(self):
         self.destroy()
 

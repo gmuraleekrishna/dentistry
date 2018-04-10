@@ -60,15 +60,13 @@ class GetAnglePage(tk.Frame):
         angle2 = int(180 - angles[1])
         font = cv2.FONT_HERSHEY_PLAIN
         if(lowest_point[0][1] > lowest_point[1][1]):
-            cv2.putText(self.image, str(angle1) ,(lowest_point[1][0] + 7,  lowest_point[1][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
-            cv2.putText(self.image, str(angle2) ,(lowest_point[0][0] - 20,  lowest_point[1][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
+            cv2.putText(self.image, str(angle1) ,(lowest_point[1][0] + 6,  lowest_point[1][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
+            cv2.putText(self.image, str(angle2) ,(lowest_point[0][0] - 18,  lowest_point[1][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
             self.image = cv2.line(self.image, (15, lowest_point[1][1] - 10), (self.image.shape[1] - 15, lowest_point[1][1] - 10), color=(0, 0, 255), thickness=2, lineType=8)
         else:
-            cv2.putText(self.image, str(angle1) ,(lowest_point[0][0] + 7,  lowest_point[0][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
-            cv2.putText(self.image, str(angle2) ,(lowest_point[1][0] - 20,  lowest_point[0][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
+            cv2.putText(self.image, str(angle1) ,(lowest_point[0][0] + 6,  lowest_point[0][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
+            cv2.putText(self.image, str(angle2) ,(lowest_point[1][0] - 18,  lowest_point[0][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
             self.image = cv2.line(self.image, (15, lowest_point[0][1] - 10), (self.image.shape[1] - 15, lowest_point[0][1] - 10), color=(0, 0, 255), thickness=2, lineType=8)
-        
-
         
         tk.Label(self, text='Angle 1: ' +  str(angle1) + '°', font=LARGE_FONT).grid(column=2, row=4, columnspan=1, pady=2)
         tk.Label(self, text='Angle 2: ' +  str(angle2) + '°', font=LARGE_FONT).grid(column=2, row=5, columnspan=1, pady=2)
