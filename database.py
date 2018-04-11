@@ -23,3 +23,13 @@ class Database():
 
     def get_angle_image_paths(self):
         return self.angle_image_paths
+    
+    def clear_area(self):
+        self.area_image_paths = []
+        self.area_values = OrderedDict()
+        self.data.pop('area_folder')
+
+    def clear_angle(self):
+        self.angle_image_paths = []
+        self.angle_values = OrderedDict()
+        self.data.pop('angle_folder')

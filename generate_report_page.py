@@ -69,7 +69,7 @@ class GenetateReportPage(tk.Frame):
                 analysis = "The area has %s by %0.1f %%" % (state, percentage)
                 Story.append(Paragraph("Analysis: " + analysis, styles["Normal"]))
                 Story.append(Spacer(1, 12))
-
+            self.database.clear_area()
         elif(self.image_type == 'angle'):
             for angle_image in self.database.get_angle_image_paths():
                 im = self.get_image(angle_image, width=2.5*inch)
@@ -93,7 +93,7 @@ class GenetateReportPage(tk.Frame):
                 analysis2 = "angle2 has %s by %0.1f %%" % (state2, percentage2)
                 Story.append(Paragraph("Analysis: " + analysis1 + ' and ' +  analysis2, styles["Normal"]))
                 Story.append(Spacer(1, 12))
-
+            self.database.clear_angle()
         Story.append(Paragraph("Comment: " + self.entry.get(), styles["Normal"]))
         Story.append(Spacer(1, 12))
         
