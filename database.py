@@ -27,9 +27,9 @@ class Database():
     def clear_area(self):
         self.area_image_paths = []
         self.area_values = OrderedDict()
-        self.data.pop('area_folder')
+        self.data.pop('area_folder', None)
 
     def clear_angle(self):
         self.angle_image_paths = []
         self.angle_values = OrderedDict()
-        self.data.pop('angle_folder')
+        self.data.pop('angle_folder', None)

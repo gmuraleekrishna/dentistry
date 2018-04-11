@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 import time
 import os
+from tkinter import messagebox
 
 LARGE_FONT= ("Verdana", 12)
 from get_angle_page import GetAnglePage
@@ -87,5 +88,14 @@ class GetImageFilePage(tk.Frame):
         frame.lift()
 
     def __back(self):
-        self.destroy()
+        if(self.file_count > 0):
+            if messagebox.askokcancel("Warning", "There are unsaved images. Do you want to clear ?"):
+                if(self.image_type == 'angle'):
+                    self.database.clear_angle()
+                else:
+                    self.database.clear_area()
+                self.destroy()
+        else:
+            self.destroy()
+        
         
