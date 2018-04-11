@@ -5,6 +5,8 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.enums import TA_JUSTIFY, TA_CENTER
+from reportlab.lib import utils
+    
 import time
 import tkinter as tk
 from tkinter import ttk
@@ -47,9 +49,9 @@ class GenetateReportPage(tk.Frame):
         if(self.image_type == 'area'):
             for area_image in self.database.get_area_image_paths():
                 area = self.database.area_values[area_image]
-                im = Image(area_image, 3*inch, 3*inch)
+                im = self.get_image(area_image, width=2.5*inch)
                 Story.append(im)
-                area_text = '<font size=11>Area %s pixels</font>' % area
+                area_text = '<font size=11>Area: %s pixels</font>' % area
                 
                 Story.append(Paragraph(area_text, styles["Normal"]))
                 Story.append(Spacer(1, 24))
@@ -70,7 +72,7 @@ class GenetateReportPage(tk.Frame):
 
         elif(self.image_type == 'angle'):
             for angle_image in self.database.get_angle_image_paths():
-                im = Image(angle_image, 3*inch, 3*inch)
+                im = self.get_image(angle_image, width=2.5*inch)
                 Story.append(im)
                 angle1 = self.database.angle_values[angle_image][0]
                 angle2 =self.database.angle_values[angle_image][1]
@@ -98,6 +100,13 @@ class GenetateReportPage(tk.Frame):
         doc.build(Story)
         if messagebox.showinfo("Saved", "Report generated: " + file_path):
             self.__back()
+
+
+    def get_image(self, path, width=1*inch):
+        img = utils.ImageReader(path)
+        iw, ih = img.getSize()
+        aspect = ih / float(iw)
+        return Image(path, width=width, height=(width * aspect))
         
     def get_change(self, first_angle, last_angle):
         if(first_angle > last_angle):

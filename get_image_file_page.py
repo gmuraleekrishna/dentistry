@@ -42,8 +42,6 @@ class GetImageFilePage(tk.Frame):
             tk.Button(self, text="Generate Report", width=20, command=self.__show_report_page).grid(column=2,  row=5, columnspan=1, pady=10)
 
         tk.Button(self, text="Back", width=10, command=self.__back).grid(column=2,  row=6, columnspan=1, pady=10)
-
-  
         tk.Label(self, text= str(self.file_count) + " files added", font=LARGE_FONT).grid(column=2, row=7, columnspan=1, pady=5)
     
 
@@ -59,7 +57,7 @@ class GetImageFilePage(tk.Frame):
                 root_folder = self.image_type.capitalize()
             else:
                 root_folder = self.entry.get()
-            report_folder_name =  root_folder.replace(' ','_')
+            report_folder_name =  root_folder.replace(' ','_') + '_' + time.strftime('%Y%M%d-%H-%M-%S')
             os.makedirs(report_folder_name)
             self.database.add(self.image_type + '_folder', report_folder_name)
     
@@ -70,6 +68,7 @@ class GetImageFilePage(tk.Frame):
             self.__show_angle_page()
         else:
             self.__show_area_page()
+        self.image_file_path = None        
 
     def __show_area_page(self):
         frame = GetAreaPage(parent=self.parent, database=self.database, image_path=self.image_file_path)
