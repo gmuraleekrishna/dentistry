@@ -73,7 +73,6 @@ class GetAnglePage(tk.Frame):
         self.database.add_angles(file_path, values=(angle1, angle2))
         cv2.imwrite(file_path, self.image)
 
-
     def __back(self):
         self.destroy()
         from get_image_file_page import GetImageFilePage

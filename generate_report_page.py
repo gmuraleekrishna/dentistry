@@ -29,13 +29,15 @@ class GenetateReportPage(tk.Frame):
         self.entry = ttk.Entry(self, width=25)
         self.entry.grid(column=2, row=5, stick='ew')
 
-        self.gen_report_btn = tk.Button(self, text="Generate PDF", width=20, command=self.gen_report).grid(column=2, row=7, pady=10)
+        self.gen_report_btn = tk.Button(self, text="Generate PDF", width=20, command=self.gen_report)
+        self.gen_report_btn.grid(column=2, row=7, pady=10)
 
         self.back_btn = tk.Button(self, text="Back", width=10, command=self.__back).grid(column=2, row=8, pady=10)
 
         self.pack()
 
     def gen_report(self):
+        self.gen_report_btn.config(text="Generating...")
         file_path = os.path.join(self.database.data[self.image_type + '_folder'],  self.image_type + "_report_" + time.strftime('%Y%m%d-%H%M%S') + ".pdf")
         doc = SimpleDocTemplate(file_path, pagesize=A4,
                         rightMargin=72,leftMargin=72,
@@ -98,7 +100,8 @@ class GenetateReportPage(tk.Frame):
         Story.append(Spacer(1, 12))
         
         doc.build(Story)
-        if messagebox.showinfo("Saved", "Report generated: " + file_path):
+        self.gen_report_btn.config(text="Generate PDF")
+        if messagebox.showinfo("Saved", "Report generated at " + file_path):
             self.__back()
 
 
