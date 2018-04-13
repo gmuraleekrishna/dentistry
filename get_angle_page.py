@@ -56,8 +56,8 @@ class GetAnglePage(tk.Frame):
         lines = self.marked_image.get_lines()
         lowest_point = []
         for line in lines:
-            y = np.absolute(line[3] - line[1])
-            x = np.absolute(line[2] - line[0])
+            y = line[3] - line[1]
+            x = line[2] - line[0]
             angles.append(np.rad2deg(np.arctan2(y, x)))
 
             self.image = cv2.line(self.image, ( line[0], line[1] ), (line[2], line[3] ), color=(255, 0, 0), thickness=2, lineType=8)
@@ -66,17 +66,17 @@ class GetAnglePage(tk.Frame):
             else:
                 lowest_point.append((line[0] , line[1]))
 
-        angle1 = int(180 - angles[0])
-        angle2 = int(180 - angles[1])
+        angle1 = int(180- angles[0])
+        angle2 = int(angles[1])
         font = cv2.FONT_HERSHEY_PLAIN
         if(lowest_point[0][1] > lowest_point[1][1]):
+            self.image = cv2.line(self.image, (15, lowest_point[1][1] - 10), (self.image.shape[1] - 15, lowest_point[1][1] - 10), color=(255, 0, 255), thickness=1, lineType=8)
             cv2.putText(self.image, str(angle2) ,(lowest_point[1][0] -18,  lowest_point[1][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
             cv2.putText(self.image, str(angle1) ,(lowest_point[0][0] - 6,  lowest_point[1][1] - 18), font, 0.7, (0 ,255, 0), 1, cv2.LINE_AA)
-            self.image = cv2.line(self.image, (15, lowest_point[1][1] - 10), (self.image.shape[1] - 15, lowest_point[1][1] - 10), color=(255, 0, 255), thickness=1, lineType=8)
         else:
+            self.image = cv2.line(self.image, (15, lowest_point[0][1] - 10), (self.image.shape[1] - 15, lowest_point[0][1] - 10), color=(255, 0, 255), thickness=1, lineType=8)
             cv2.putText(self.image, str(angle1) ,(lowest_point[0][0] + 6,  lowest_point[0][1] - 18), font, 0.7, (0 ,0, 255), 1, cv2.LINE_AA)
             cv2.putText(self.image, str(angle2) ,(lowest_point[1][0] - 18,  lowest_point[0][1] - 18), font, 0.7, (0 , 255, 0), 1, cv2.LINE_AA)
-            self.image = cv2.line(self.image, (15, lowest_point[0][1] - 10), (self.image.shape[1] - 15, lowest_point[0][1] - 10), color=(255, 0, 255), thickness=1, lineType=8)
         
         self.angle_label.config(text='Angle 1: ' +  str(angle1) + '°, Angle 2: ' +  str(angle2) + '°')
         self.a.imshow(self.image)
