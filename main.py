@@ -48,6 +48,6 @@ if __name__ == "__main__":
 # display the menu
     app.master.config(menu=menubar)
     app.master.minsize(300, 300)
-    
+    app.master.maxsize(600, 600)
     app.master.protocol("WM_DELETE_WINDOW", on_close)
     app.mainloop()

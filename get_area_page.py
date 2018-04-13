@@ -21,27 +21,33 @@ class GetAreaPage(tk.Frame):
         self.database = database
         self.image_path = image_path
         tk.Frame.__init__(self, self.parent, width=100, height=100)
-        label = tk.Label(self, text="Calculate Area", font=LARGE_FONT)
-        label.grid(column=2, row=0, columnspan=1, pady=10)
-        tk.Label(self, text="Click on the image to draw. Double click to finish drawing").grid(column=2, row=1, columnspan=1, pady=10)
-
-        f = Figure(figsize=(6,6), dpi=100)
-        a = f.add_subplot(111)
-        a.axis('off')
-        canvas = FigureCanvasTkAgg(f, self)
-        canvas.draw()
-
-        self.image = cv2.imread(image_path)
-        a.imshow(self.image)
-        self.marked_image = roipoly(canvas=canvas, roicolor='r', callback=self.__done_callback)
-
-        self.canvas_widget = canvas.get_tk_widget()
-        self.canvas_widget.grid(column=0,  row=3, columnspan=5, sticky='ew', pady=1)
+        tk.Label(self, text="Click on the image to draw. Double click to finish drawing").pack(side = tk.TOP, pady=10)
 
         self.done_btn = tk.Button(self, text="Done", width=10, command=self.__back)
-        self.done_btn.grid(column=2,  row=7, columnspan=1, pady=2)
+        self.done_btn.config(state='disabled')
+        self.done_btn.pack(side = tk.TOP, pady=0)
+        
+
+        f = Figure(figsize=(6,6), dpi=100)
+        self.a = f.add_subplot(111)
+        self.a.axis('off')
+        self.canvas = FigureCanvasTkAgg(f, self)
+        self.canvas.draw()
+
+        self.image = cv2.imread(self.image_path)
+        self.a.imshow(self.image)
+        self.marked_image = roipoly(canvas=self.canvas, roicolor='r', callback=self.__done_callback)
+
+        self.canvas_widget = self.canvas.get_tk_widget()
+        self.canvas_widget.config(width=500, height=500, bd=0, highlightthickness=0, relief='flat',  borderwidth=0)
+        self.canvas_widget.pack(side = tk.BOTTOM, pady=0)
+
+        self.area_label = tk.Label(self, text='', font=LARGE_FONT)
+        self.area_label.pack(side = tk.BOTTOM, pady=10)
+
             
     def __done_callback(self):
+        self.done_btn.config(state='active')
         file_path =  os.path.join(self.database.data['area_folder'], str(random.randint(0, 1000)) + '.png')
         self.marked_image.finish_drawing()
         roi_pixels = self.marked_image.get_mask(self.image[:,:,0])
@@ -50,11 +56,11 @@ class GetAreaPage(tk.Frame):
         final = cv2.polylines(self.image, [pts], True, color=(255,0, 0), thickness=2, lineType=8)
         cv2.imwrite(file_path, final)
         m = cv2.moments(roi_pixels)
-
         self.database.add_area(file_path, value=m['m00'])
-        area_label = tk.Label(self, text= 'Area: '+ str(m['m00']) + ' px', font=LARGE_FONT, width=25)
-        area_label.grid(column=2, row=4, columnspan=1, pady=5)
-    
+        self.area_label.config( text= 'Area: '+ str(m['m00']) + ' px')
+        self.a.imshow(self.image)
+        self.canvas.draw()
+
     def __back(self):
         self.destroy()
         from get_image_file_page import GetImageFilePage
