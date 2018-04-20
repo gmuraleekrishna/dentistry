@@ -45,47 +45,54 @@ class GenetateReportPage(tk.Frame):
         Story=[]
         styles=getSampleStyleSheet()
         styles.add(ParagraphStyle(name='Left', alignment=TA_JUSTIFY))
-        Story.append(Paragraph(self.image_type.capitalize() + " Report", styles["Heading1"]))
+        Story.append(Paragraph("Dent-Reckoner %s Report" % self.image_type.capitalize() , styles["Heading1"]))
         Story.append(Spacer(1, 12))
 
         if(self.image_type == 'area'):
-            for area_image in self.database.get_area_image_paths():
-                area = self.database.area_values[area_image]
-                im = self.get_image(area_image, width=2.5*inch)
+            areas = self.database.area_values.items()
+            first_area = 0
+            for index, (image_path, area) in enumerate(areas):
+                im = self.get_image(image_path, width=2.5*inch)
                 Story.append(im)
-                area_text = '<font size=11>Area: %s pixels</font>' % area
                 
-                Story.append(Paragraph(area_text, styles["Normal"]))
+                Story.append(Paragraph('Area: %s pixels' % area, styles["Normal"]))
+                if(index > 0):
+                    state, percentage = self.get_change(first_area, area)
+                    evaluation = "The area has %s by %0.1f %% compared to first image" % (state, percentage)
+                    Story.append(Paragraph(evaluation, styles["Normal"]))
+                else:
+                    first_area = area
                 Story.append(Spacer(1, 24))
+
             areas = list(self.database.area_values.items())
-            if(len(areas) > 1):
+            if(len(areas) > 0):
                 first_area = areas[0][1]
                 last_area = areas[-1][1]
-                if(first_area > last_area):
-                    state = 'reduced'
-                elif (first_area < last_area):
-                    state = 'increased'
-                else:
-                    state =  'unchanged'
-                percentage = 100.0 * math.fabs(last_area - first_area) / first_area
+                state, percentage = self.get_change(first_area, last_area)
                 analysis = "The area has %s by %0.1f %%" % (state, percentage)
-                Story.append(Paragraph("Analysis: " + analysis, styles["Normal"]))
+                Story.append(Paragraph("Summary: " + analysis, styles["Normal"]))
                 Story.append(Spacer(1, 12))
             self.database.clear_area()
         elif(self.image_type == 'angle'):
-            for angle_image in self.database.get_angle_image_paths():
-                im = self.get_image(angle_image, width=2.5*inch)
-                Story.append(im)
-                angle1 = self.database.angle_values[angle_image][0]
-                angle2 =self.database.angle_values[angle_image][1]
-                angle1 = "<font size=12>Angle1:  %s°</font>" % angle1
-                angle2 = "<font size=12>Angle2:  %s°</font>" % angle2
-                
-                Story.append(Paragraph(angle1, styles["Normal"]))
-                Story.append(Spacer(1, 12))
-                Story.append(Paragraph(angle2, styles["Normal"]))
-                Story.append(Spacer(1, 24))
             angles = list(self.database.angle_values.items())
+            first_angles = (0, 0)
+            for index, (image_path, angle_pair) in enumerate(angles):
+                im = self.get_image(image_path, width=2.5*inch)
+                Story.append(im)
+                angle1 = angle_pair[0]
+                angle2 = angle_pair[1]
+                
+                Story.append(Paragraph("Angle1:  %s°, Angle2: %s°" % (angle1, angle2), styles["Normal"]))
+                if(index > 0):
+                    state1, percentage1 = self.get_change(first_angles[0], angle1)
+                    state2, percentage2 = self.get_change(first_angles[1], angle2)
+                    evaluation1 = "Angle1 has %s by %0.1f %%" % (state1, percentage1)
+                    evaluation2 = "Angle2 has %s by %0.1f %%" % (state2, percentage2)
+                    Story.append(Paragraph("Analysis: %s and %s compared to first image" % (evaluation1, evaluation2), styles["Normal"]))
+                else:
+                    first_angles = (angle1, angle2)
+
+                Story.append(Spacer(1, 24))
             if(len(angles) > 1):
                 first_angles = angles[0][1]
                 last_angles = angles[-1][1]
@@ -93,7 +100,7 @@ class GenetateReportPage(tk.Frame):
                 state2, percentage2 = self.get_change(first_angles[1], last_angles[1])
                 analysis1 = "Angle1 has %s by %0.1f %%" % (state1, percentage1)
                 analysis2 = "angle2 has %s by %0.1f %%" % (state2, percentage2)
-                Story.append(Paragraph("Analysis: " + analysis1 + ' and ' +  analysis2, styles["Normal"]))
+                Story.append(Paragraph("Summary: %s and %s" % (analysis1, analysis2), styles["Normal"]))
                 Story.append(Spacer(1, 12))
             self.database.clear_angle()
         Story.append(Paragraph("Comment: " + self.entry.get(), styles["Normal"]))
@@ -111,14 +118,14 @@ class GenetateReportPage(tk.Frame):
         aspect = ih / float(iw)
         return Image(path, width=width, height=(width * aspect))
         
-    def get_change(self, first_angle, last_angle):
-        if(first_angle > last_angle):
+    def get_change(self, first_value, second_value):
+        if(first_value > second_value):
             state = 'reduced'
-        elif (first_angle < last_angle):
+        elif (first_value < second_value):
             state = 'increased'
         else:
-            state =  'unchanged'
-        percentage = 100.0 * math.fabs(first_angle - last_angle) / first_angle
+            state =  'remain unchanged'
+        percentage = 100.0 * math.fabs(first_value - second_value) / first_value
         return state, percentage
     def __back(self):
         self.destroy()

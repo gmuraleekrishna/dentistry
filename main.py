@@ -16,7 +16,7 @@ from get_angle_page import GetAnglePage
 
 LARGE_FONT= ("Verdana", 12)
 
-class Dentistry(tk.Frame):
+class DentReckoner(tk.Frame):
 
     def __init__(self, parent=None):
         database = Database()
@@ -34,8 +34,8 @@ class Dentistry(tk.Frame):
         
 
 if __name__ == "__main__":
-    app = Dentistry()
-    app.master.title("Dentistry")
+    app = DentReckoner()
+    app.master.title("Dent-Reckoner")
     def on_close():
         if messagebox.askokcancel("Quit", "Closing the application will delete all the data. Do you want to quit?"):
             app.master.destroy()
