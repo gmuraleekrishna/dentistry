@@ -65,13 +65,13 @@ class GenetateReportPage(tk.Frame):
                 Story.append(Spacer(1, 24))
 
             areas = list(self.database.area_values.items())
-            if(len(areas) > 0):
-                first_area = areas[0][1]
-                last_area = areas[-1][1]
-                state, percentage = self.get_change(first_area, last_area)
-                analysis = "The area has %s by %0.1f%%" % (state, percentage)
-                Story.append(Paragraph("Summary: " + analysis, styles["Normal"]))
-                Story.append(Spacer(1, 12))
+
+            first_area = areas[0][1]
+            last_area = areas[-1][1]
+            state, percentage = self.get_change(first_area, last_area)
+            analysis = "The area has %s by %0.1f%%" % (state, percentage)
+            Story.append(Paragraph("Summary: " + analysis, styles["Normal"]))
+            Story.append(Spacer(1, 12))
             self.database.clear_area()
         elif(self.image_type == 'angle'):
             angles = list(self.database.angle_values.items())
@@ -93,15 +93,14 @@ class GenetateReportPage(tk.Frame):
                     first_angles = (angle1, angle2)
 
                 Story.append(Spacer(1, 24))
-            if(len(angles) > 1):
-                first_angles = angles[0][1]
-                last_angles = angles[-1][1]
-                state1, percentage1 = self.get_change(first_angles[0], last_angles[0])
-                state2, percentage2 = self.get_change(first_angles[1], last_angles[1])
-                analysis1 = "Angle1 has %s by %0.1f %%" % (state1, percentage1)
-                analysis2 = "angle2 has %s by %0.1f %%" % (state2, percentage2)
-                Story.append(Paragraph("Summary: %s and %s" % (analysis1, analysis2), styles["Normal"]))
-                Story.append(Spacer(1, 12))
+            first_angles = angles[0][1]
+            last_angles = angles[-1][1]
+            state1, percentage1 = self.get_change(first_angles[0], last_angles[0])
+            state2, percentage2 = self.get_change(first_angles[1], last_angles[1])
+            analysis1 = "Angle1 has %s by %0.1f %%" % (state1, percentage1)
+            analysis2 = "angle2 has %s by %0.1f %%" % (state2, percentage2)
+            Story.append(Paragraph("Summary: %s and %s" % (analysis1, analysis2), styles["Normal"]))
+            Story.append(Spacer(1, 12))
             self.database.clear_angle()
         Story.append(Paragraph("Comment: " + self.entry.get(), styles["Normal"]))
         Story.append(Spacer(1, 12))
@@ -125,12 +124,11 @@ class GenetateReportPage(tk.Frame):
             state = 'increased'
         else:
             state =  'remain unchanged'
-        percentage = 100.0 * math.fabs(first_value - second_value) / first_value
+        percentage = 100.0 * math.fabs(first_value - second_value) / (first_value + 0.1)
         return state, percentage
     def __back(self):
+        from get_image_file_page import GetImageFilePage
         self.destroy()
-
-
-
- 
- 
+        frame = GetImageFilePage(parent=self.parent, database=self.database, image_type=self.image_type)
+        frame.grid(column=0, row=0, sticky='nsew')
+        frame.lift()

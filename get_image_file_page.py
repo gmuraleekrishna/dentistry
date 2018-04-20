@@ -39,7 +39,7 @@ class GetImageFilePage(tk.Frame):
         
         tk.Button(self, text="Add " + string +  " image", width=20, command=self.__get_file).grid(column=2,  row=4, columnspan=1, pady=10)
 
-        if(self.file_count > 0):
+        if(self.file_count > 1):
             tk.Button(self, text="Generate Report", width=20, command=self.__show_report_page).grid(column=2,  row=5, columnspan=1, pady=10)
 
         tk.Button(self, text="Back", width=10, command=self.__back).grid(column=2,  row=6, columnspan=1, pady=10)
