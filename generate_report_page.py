@@ -58,7 +58,7 @@ class GenetateReportPage(tk.Frame):
                 Story.append(Paragraph('Area: %s pixels' % area, styles["Normal"]))
                 if(index > 0):
                     state, percentage = self.get_change(first_area, area)
-                    evaluation = "The area has %s by %0.1f %% compared to first image" % (state, percentage)
+                    evaluation = "The area has %s by %0.1f%% compared to first image" % (state, percentage)
                     Story.append(Paragraph(evaluation, styles["Normal"]))
                 else:
                     first_area = area
@@ -69,7 +69,7 @@ class GenetateReportPage(tk.Frame):
                 first_area = areas[0][1]
                 last_area = areas[-1][1]
                 state, percentage = self.get_change(first_area, last_area)
-                analysis = "The area has %s by %0.1f %%" % (state, percentage)
+                analysis = "The area has %s by %0.1f%%" % (state, percentage)
                 Story.append(Paragraph("Summary: " + analysis, styles["Normal"]))
                 Story.append(Spacer(1, 12))
             self.database.clear_area()
@@ -86,8 +86,8 @@ class GenetateReportPage(tk.Frame):
                 if(index > 0):
                     state1, percentage1 = self.get_change(first_angles[0], angle1)
                     state2, percentage2 = self.get_change(first_angles[1], angle2)
-                    evaluation1 = "Angle1 has %s by %0.1f %%" % (state1, percentage1)
-                    evaluation2 = "Angle2 has %s by %0.1f %%" % (state2, percentage2)
+                    evaluation1 = "Angle1 has %s by %0.1f%%" % (state1, percentage1)
+                    evaluation2 = "Angle2 has %s by %0.1f%%" % (state2, percentage2)
                     Story.append(Paragraph("Analysis: %s and %s compared to first image" % (evaluation1, evaluation2), styles["Normal"]))
                 else:
                     first_angles = (angle1, angle2)
