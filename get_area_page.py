@@ -23,10 +23,11 @@ class GetAreaPage(tk.Frame):
         tk.Frame.__init__(self, self.parent, width=100, height=100)
         tk.Label(self, text="Click on the image to draw. Double click to finish drawing").pack(side = tk.TOP, pady=10)
 
-        self.done_btn = tk.Button(self, text="Done", width=10, command=self.__back)
+        self.done_btn = tk.Button(self, text="Done", width=10, command=self.__save)
         self.done_btn.config(state='disabled')
         self.done_btn.pack(side = tk.TOP, pady=0)
         
+        tk.Button(self, text="Reset", width=10, command=self.__reset).pack(side = tk.TOP, pady=0)
 
         f = Figure(figsize=(6,6), dpi=100)
         self.a = f.add_subplot(111)
@@ -44,22 +45,32 @@ class GetAreaPage(tk.Frame):
 
         self.area_label = tk.Label(self, text='', font=LARGE_FONT)
         self.area_label.pack(side = tk.BOTTOM, pady=10)
-
+    
+    def __reset(self):
+        from get_area_page import GetAreaPage
+        frame = GetAreaPage(parent=self.parent, database=self.database, image_path=self.image_path)
+        frame.grid(column=0, row=0, sticky='nsew')
+        frame.lift()
+        self.destroy()
             
     def __done_callback(self):
         self.done_btn.config(state='active')
-        file_path =  os.path.join(self.database.data['area_folder'], str(random.randint(0, 1000)) + '.png')
         self.marked_image.finish_drawing()
         roi_pixels = self.marked_image.get_mask(self.image[:,:,0])
         roi_pixels = np.array(roi_pixels, dtype=np.uint8)
         pts = self.marked_image.get_marked_polygon()
-        final = cv2.polylines(self.image, [pts], True, color=(255,0, 0), thickness=2, lineType=8)
-        cv2.imwrite(file_path, final)
+        self.image = cv2.polylines(self.image, [pts], True, color=(255,0, 0), thickness=2, lineType=8)
         m = cv2.moments(roi_pixels)
-        self.database.add_area(file_path, value=m['m00'])
-        self.area_label.config( text= 'Area: '+ str(m['m00']) + ' px')
+        self.area = m['m00']
         self.a.imshow(self.image)
+        self.area_label.config( text= 'Area: '+ str(self.area) + ' px')
         self.canvas.draw()
+
+    def __save(self):
+        file_path =  os.path.join(self.database.data['area_folder'], str(random.randint(0, 1000)) + '.png')
+        self.database.add_area(file_path, value=self.area)
+        cv2.imwrite(file_path, self.image)
+        self.__back()
 
     def __back(self):
         self.destroy()
