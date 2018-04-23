@@ -63,15 +63,6 @@ class GenetateReportPage(tk.Frame):
                 else:
                     first_area = area
                 Story.append(Spacer(1, 24))
-
-            areas = list(self.database.area_values.items())
-
-            first_area = areas[0][1]
-            last_area = areas[-1][1]
-            state, percentage = self.get_change(first_area, last_area)
-            analysis = "The area has %s by %0.1f%%" % (state, percentage)
-            Story.append(Paragraph("Summary: " + analysis, styles["Normal"]))
-            Story.append(Spacer(1, 12))
             self.database.clear_area()
         elif(self.image_type == 'angle'):
             angles = list(self.database.angle_values.items())
@@ -91,25 +82,16 @@ class GenetateReportPage(tk.Frame):
                     Story.append(Paragraph("Analysis: %s and %s compared with the initial sample" % (evaluation1, evaluation2), styles["Normal"]))
                 else:
                     first_angles = (angle1, angle2)
-
                 Story.append(Spacer(1, 24))
-            first_angles = angles[0][1]
-            last_angles = angles[-1][1]
-            state1, percentage1 = self.get_change(first_angles[0], last_angles[0])
-            state2, percentage2 = self.get_change(first_angles[1], last_angles[1])
-            analysis1 = "Angle1 has %s by %0.1f %%" % (state1, percentage1)
-            analysis2 = "angle2 has %s by %0.1f %%" % (state2, percentage2)
-            Story.append(Paragraph("Summary: %s and %s" % (analysis1, analysis2), styles["Normal"]))
-            Story.append(Spacer(1, 12))
             self.database.clear_angle()
-        Story.append(Paragraph("Comment: " + self.entry.get(), styles["Normal"]))
-        Story.append(Spacer(1, 12))
+        if (len(self.entry.get()) > 0):
+            Story.append(Spacer(1, 12))
+            Story.append(Paragraph("Comment: " + self.entry.get(), styles["Normal"]))
         
         doc.build(Story)
         self.gen_report_btn.config(text="Generate PDF")
-        if messagebox.showinfo("Saved", "Report generated at " + file_path):
+        if messagebox.showinfo("Saved", "Report generated: %s" % file_path):
             self.__back()
-
 
     def get_image(self, path, width=1*inch):
         img = utils.ImageReader(path)
