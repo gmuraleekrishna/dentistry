@@ -119,6 +119,7 @@ after_build:
 # to run your custom scripts instead of automatic MSBuild
 build_script:
   - set PYTHONOPTIMIZE=2 && pyinstaller -F -i icon.ico --windowed --name=Dent-Reckoner main.py
+  - cp README.md dist/LICENCE.txt
 # to disable automatic builds
 #build: off
 
