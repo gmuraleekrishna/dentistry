@@ -39,14 +39,8 @@ if __name__ == "__main__":
     def on_close():
         if messagebox.askokcancel("Quit", "Closing the application will delete all the data. Do you want to quit?"):
             app.master.destroy()
-    def about():
-        messagebox.showinfo("About", "Author: Muraleekrishna Gopinathan [gmuraleekrishna@outlook.com], License: GPLv3 https://www.gnu.org/licenses/gpl-3.0.en.html")
-    menubar = tk.Menu(app.master)
-    menubar.add_command(label="About", command=about)
-    menubar.add_command(label="Quit", command=on_close)
 
 # display the menu
-    app.master.config(menu=menubar)
     app.master.minsize(300, 300)
     app.master.maxsize(600, 600)
     app.master.protocol("WM_DELETE_WINDOW", on_close)
